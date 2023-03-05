@@ -44,7 +44,7 @@ console.log(products);
 
 
 
-
+console.log('det här är en test');
 
 
 
@@ -62,3 +62,4 @@ console.log(products);
 
 
 //-------------------------------------------------------------
+
