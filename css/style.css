@@ -1,58 +1,81 @@
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    outline: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
 }
 
 body {
-    font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #141617;
+  color: #fff;
+  padding: 10px;
+}
+
+.logo img {
+  height: 50px;
+
+}
+
+.cart {
+  margin-right: 1%;
+}
+
+.cart button {
+    background-color: transparent;
 }
 
 #products-container {
-    display: flex;
-    flex-flow: row wrap;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
 }
 
 .card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    width: 250px;
-    height: 400px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-    margin: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 250px;
+  height: 400px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  margin: 20px;
 }
 
 .card img {
-    width: 200px;
-    height: 200px;
-    object-fit: contain;
-    margin-bottom: 20px;
-    border-radius: 4px;
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+  margin-bottom: 20px;
+  border-radius: 4px;
 }
 
 .card h2 {
-    font-size: 1.5rem;
-    margin: 0;
-    margin-bottom: 10px;
+  font-size: 1.5rem;
+  margin: 0;
+  margin-bottom: 10px;
 }
 
 .card :nth-child(4) {
-    font-weight: 300;
-    font-style: italic;
+  font-weight: 300;
+  font-style: italic;
 }
 
 .card button {
-    background-color: #f8cb5f;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
+  background-color: #f8cb5f;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
 }

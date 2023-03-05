@@ -54,7 +54,7 @@ Object.values(products).forEach(({name, imgUrl, price, saldo}) => {
 
   const productPrice = $('<p>', { text: `${price} kr`});
 
-  const productQuantity = $('<p>', { text: `In stock ${saldo}` });
+  const productQuantity = $('<p>', { text: `In stock : ${saldo}` });
 
   const cartBtn = $('<button>',{ text: 'Send to cart', id: 'myCartBtn'});
 
