@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
-import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-database.js"
+import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-database.js"
 
 // TODO: Add SDKs for Firebase products that you want to use
 
@@ -33,3 +33,12 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
+
+
+//Hämta products från databasen
+const productsRef = ref(database, 'products');
+
+const productsSnapshot = await get(productsRef);
+const products = productsSnapshot.val();
+
+console.log(products);
