@@ -1,5 +1,4 @@
 // Import the functions you need from the SDKs you need
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
 import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-database.js"
 
@@ -42,3 +41,6 @@ const productsSnapshot = await get(productsRef);
 const products = productsSnapshot.val();
 
 console.log(products);
+
+
+
