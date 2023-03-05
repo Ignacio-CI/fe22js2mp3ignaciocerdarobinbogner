@@ -58,7 +58,7 @@ Object.values(products).forEach(({name, imgUrl, price, saldo}) => {
 
   const cartBtn = $('<button>',{ text: 'Send to cart', id: 'myCartBtn'});
 
-  productDiv.append(productImage, productName, productPrice, productQuantity, cartBtn);
+  productDiv.append(productImage, productName, productPrice, cartBtn);
   container.append(productDiv);
 });
 
