@@ -44,7 +44,26 @@ console.log(products);
 
 
 
-console.log('det här är en test');
+//posta produkter på DOM
+const container = $('#products-container');
+Object.values(products).forEach(product => {
+
+  const productDiv = $('<div>', { class: 'product' });
+
+  const productImage = $('<img>', { src: product.imageUrl });
+
+  const productName = $('<h2>', { text: product.name });
+
+  const productPrice = $('<p>', { text: 'Pris: '+ product.price });
+
+  const productQuantity = $('<p>', { text: 'Antal i lager: ' + product.saldo });
+
+  productDiv.append(productImage, productName, productPrice, productQuantity);
+  container.append(productDiv);
+});
+
+
+
 
 
 
@@ -75,4 +94,4 @@ console.log('det här är en test');
 
 
 
-console.log('lalalla dfhkajhfefhasdkfh')
+
