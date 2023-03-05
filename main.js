@@ -52,13 +52,13 @@ Object.values(products).forEach(({name, imgUrl, price, saldo}) => {
 
   const productName = $('<h2>', { text: name });
 
-  const productPrice = $('<p>', { text: 'Pris: ' + price });
+  const productPrice = $('<p>', { text: `${price} kr`});
 
-  //const productQuantity = $('<p>', { text: 'Antal i lager: ' + saldo });
+  const productQuantity = $('<p>', { text: `In stock ${saldo}` });
 
   const cartBtn = $('<button>',{ text: 'Send to cart', id: 'myCartBtn'});
 
-  productDiv.append(productImage, productName, productPrice, cartBtn);
+  productDiv.append(productImage, productName, productPrice, productQuantity, cartBtn);
   container.append(productDiv);
 });
 
