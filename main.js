@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
-import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-database.js"
+import { getDatabase, ref, get, onValue } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-database.js"
 
 // TODO: Add SDKs for Firebase products that you want to use
 
@@ -56,16 +56,23 @@ Object.values(products).forEach(({name, imgUrl, price, saldo}) => {
 
   const productQuantity = $('<p>', { text: `In stock : ${saldo}` });
 
-  const cartBtn = $('<button>',{ text: 'Send to cart', id: 'myCartBtn'});
+  const addToCartBtn = $('<button>', { text: 'Add to cart', class: 'add-btn'});
 
-  productDiv.append(productImage, productName, productPrice, productQuantity, cartBtn);
+  productDiv.append(productImage, productName, productPrice, productQuantity, addToCartBtn);
   container.append(productDiv);
+
 });
+
+$('.add-btn').on('click', () => {
+  console.log('click')
+})
 
 $("#cart-btn").on("click", event => {
   event.preventDefault()
   location.assign('./html/cart.html');
-  
 });
 
-
+onValue(productsRef, (snapshot) => {
+  const data = snapshot.val();
+  console.log(data)
+})
