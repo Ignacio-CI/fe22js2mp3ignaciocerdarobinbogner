@@ -42,56 +42,23 @@ const products = productsSnapshot.val();
 
 console.log(products);
 
-
-
 //posta produkter på DOM
 const container = $('#products-container');
-Object.values(products).forEach(product => {
+Object.values(products).forEach(({name, imgUrl, price, saldo}) => {
 
-  const productDiv = $('<div>', { class: 'product' });
+  const productDiv = $('<div>', { class: 'card' });
 
-  const productImage = $('<img>', { src: product.imageUrl });
+  const productImage = $('<img>', { src: imgUrl });
 
-  const productName = $('<h2>', { text: product.name });
+  const productName = $('<h2>', { text: name });
 
-  const productPrice = $('<p>', { text: 'Pris: '+ product.price });
+  const productPrice = $('<p>', { text: 'Pris: ' + price });
 
-  const productQuantity = $('<p>', { text: 'Antal i lager: ' + product.saldo });
+  //const productQuantity = $('<p>', { text: 'Antal i lager: ' + saldo });
 
-  productDiv.append(productImage, productName, productPrice, productQuantity);
+  const addToCartBtn = $('<button>', { text: 'Add to cart' })
+
+  productDiv.append(productImage, productName, productPrice, addToCartBtn);
   container.append(productDiv);
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//-------------------------------------------------------------
-
-//-------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
 
