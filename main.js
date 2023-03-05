@@ -1,5 +1,4 @@
 // Import the functions you need from the SDKs you need
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
 import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-database.js"
 
@@ -33,3 +32,15 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
+
+class Product {
+  constructor(name, price, imgUrl, saldo) {
+    this.name = name;
+    this.price = price;
+    this.imgUrl = imgUrl;
+    this.saldo = saldo;
+  }
+}
+
+const shoes = new Product('Nike Air', 1099, 'an image url', 100);
+
