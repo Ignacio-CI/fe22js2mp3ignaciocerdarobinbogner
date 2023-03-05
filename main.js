@@ -62,3 +62,10 @@ Object.values(products).forEach(({name, imgUrl, price, saldo}) => {
   container.append(productDiv);
 });
 
+$("#cart-btn").on("click", event => {
+  event.preventDefault()
+  location.assign('./html/cart.html');
+  
+});
+
+
