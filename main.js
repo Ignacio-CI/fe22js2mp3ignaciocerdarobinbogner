@@ -76,8 +76,13 @@ $('.add-btn').on('click', function(){
   };
 
   // Get the products from localStorage
-  const products = localStorage.getItem('products') ? JSON.parse(localStorage.getItem('products')) : []; // Get any existing products from localStorage, if there are none, set it to an empty array
-  console.log(products)
+  let products;
+
+  if (localStorage.getItem('products') === null) {
+    products = [];
+  } else {
+    products = JSON.parse(localStorage.getItem('products'));
+  }
 
   // Add the new product to the products array
   products.push(product);
@@ -87,7 +92,28 @@ $('.add-btn').on('click', function(){
 
   console.log('Product added to cart');
 });
+// const addToCartBtns = document.querySelectorAll('.add-btn');
+// addToCartBtns.forEach((btn) => {
+//   btn.addEventListener('click', (event) => {
+//     // Get product name and price from DOM elements
+//     const productName = event.target.parentElement.querySelector('h2').textContent;
+//     const productPrice = parseFloat(event.target.parentElement.querySelector('p').textContent.split(' ')[0]);
 
+//     // Check if item is already in cart
+//     let cart = JSON.parse(localStorage.getItem('cart')) || {};
+//     if (cart.hasOwnProperty(productName)) {
+//       cart[productName].quantity += 1;
+//     } else {
+//       cart[productName] = {
+//         price: productPrice,
+//         quantity: 1
+//       };
+//     }
+
+//     // Save cart to local storage
+//     localStorage.setItem('cart', JSON.stringify(cart));
+//   });
+// });
 
 
 $("#cart-btn").on("click", event => {
