@@ -91,6 +91,9 @@ $('.add-btn').on('click', function(){
   localStorage.setItem('products', JSON.stringify(products));
 
   console.log('Product added to cart');
+
+  const prodAmount = document.querySelector('#prod-amount');
+  prodAmount.innerText = `${products.length}`
 });
 // const addToCartBtns = document.querySelectorAll('.add-btn');
 // addToCartBtns.forEach((btn) => {
