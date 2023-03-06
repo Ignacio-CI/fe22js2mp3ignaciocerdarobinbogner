@@ -54,7 +54,7 @@ Object.values(products).forEach(({name, imgUrl, price, saldo}) => {
 
   const productPrice = $('<p>', { text: `${price} kr`});
 
-  const productQuantity = $('<p>', { text: `In stock : ${saldo}` });
+  const productQuantity = $('<h4>', { text: `In stock : ${saldo}` });
 
   const addToCartBtn = $('<button>', { text: 'Add to cart', class: 'add-btn'});
 
@@ -65,58 +65,46 @@ Object.values(products).forEach(({name, imgUrl, price, saldo}) => {
 
 // Add event listener to add-btn
 $('.add-btn').on('click', function(){
-  // Get the product name and price
+  // Get the product name, price, and stock
   const productName = $(this).siblings('h2').text(); // Get the text of the h2 element that is a sibling of the add-btn
   const productPrice = $(this).siblings('p').text(); // Get the text of the p element that is a sibling of the add-btn 
+  const productStock = parseInt($(this).siblings('h4').text().replace('In stock : ', '')); // Get the text of the h4 element that contains "In stock" and extract the stock level from it
 
-  // Create a new object with the product name and price
-  const product = {
-    name: productName,
-    price: productPrice
+  // Check if the product is in stock
+  if (productStock > 0) {
+    // Create a new object with the product name, price, and reduced stock
+    const product = {
+      name: productName,
+      price: productPrice,
+      stock: productStock - 1
+    };
+    
+    // Get the products from localStorage
+    let products;
+    if (localStorage.getItem('products') === null) {
+      products = [];
+    } else {
+      products = JSON.parse(localStorage.getItem('products'));
+    }
+    
+    // Add the new product to the products array
+    products.push(product);
+    
+    // Save the products array back to localStorage
+    localStorage.setItem('products', JSON.stringify(products));
+    
+    console.log('Product added to cart');
+
+    // Update the product stock in the DOM
+    $(this).siblings('h4').text(`In stock : ${product.stock}`);
+
+    // Update the cart count in the DOM
+    const prodAmount = document.querySelector('#prod-amount');
+    prodAmount.innerText = `${products.length}`;
+
   };
+})
 
-  // Get the products from localStorage
-  let products;
-
-  if (localStorage.getItem('products') === null) {
-    products = [];
-  } else {
-    products = JSON.parse(localStorage.getItem('products'));
-  }
-
-  // Add the new product to the products array
-  products.push(product);
-
-  // Save the products array back to localStorage
-  localStorage.setItem('products', JSON.stringify(products));
-
-  console.log('Product added to cart');
-
-  const prodAmount = document.querySelector('#prod-amount');
-  prodAmount.innerText = `${products.length}`
-});
-// const addToCartBtns = document.querySelectorAll('.add-btn');
-// addToCartBtns.forEach((btn) => {
-//   btn.addEventListener('click', (event) => {
-//     // Get product name and price from DOM elements
-//     const productName = event.target.parentElement.querySelector('h2').textContent;
-//     const productPrice = parseFloat(event.target.parentElement.querySelector('p').textContent.split(' ')[0]);
-
-//     // Check if item is already in cart
-//     let cart = JSON.parse(localStorage.getItem('cart')) || {};
-//     if (cart.hasOwnProperty(productName)) {
-//       cart[productName].quantity += 1;
-//     } else {
-//       cart[productName] = {
-//         price: productPrice,
-//         quantity: 1
-//       };
-//     }
-
-//     // Save cart to local storage
-//     localStorage.setItem('cart', JSON.stringify(cart));
-//   });
-// });
 
 
 $("#cart-btn").on("click", event => {
