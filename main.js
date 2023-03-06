@@ -63,9 +63,32 @@ Object.values(products).forEach(({name, imgUrl, price, saldo}) => {
 
 });
 
-$('.add-btn').on('click', () => {
-  console.log('click')
-})
+// Add event listener to add-btn
+$('.add-btn').on('click', function(){
+  // Get the product name and price
+  const productName = $(this).siblings('h2').text(); // Get the text of the h2 element that is a sibling of the add-btn
+  const productPrice = $(this).siblings('p').text(); // Get the text of the p element that is a sibling of the add-btn 
+
+  // Create a new object with the product name and price
+  const product = {
+    name: productName,
+    price: productPrice
+  };
+
+  // Get the products from localStorage
+  const products = localStorage.getItem('products') ? JSON.parse(localStorage.getItem('products')) : []; // Get any existing products from localStorage, if there are none, set it to an empty array
+  console.log(products)
+
+  // Add the new product to the products array
+  products.push(product);
+
+  // Save the products array back to localStorage
+  localStorage.setItem('products', JSON.stringify(products));
+
+  console.log('Product added to cart');
+});
+
+
 
 $("#cart-btn").on("click", event => {
   event.preventDefault()
