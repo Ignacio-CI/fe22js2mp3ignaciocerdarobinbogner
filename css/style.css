@@ -143,3 +143,12 @@ margin-bottom: 20px;
   height: 40px;
   border-radius: 10px;
 }
+
+.order-container{
+  width:50%;
+  height: 80vh;
+    box-shadow: 0 2px 5px 0 rgb(0 0 0 / 15%);
+}
+#cart-container{
+  margin: 100px;
+}

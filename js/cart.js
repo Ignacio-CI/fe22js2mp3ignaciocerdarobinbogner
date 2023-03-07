@@ -1,19 +1,23 @@
 const cart = JSON.parse(localStorage.getItem('products'));
 const cartContainer = document.querySelector('#cart-container');
-console.log(cart)
+let total = 0;
 
 cart.forEach(({name, price}) => {
-    // console.log(imgUrl, name, price)
 
-    // const itemImg = document.createElement('img');
-    // itemImg.src = `.${imgUrl}`;
+     // const itemImg = document.createElement('img');
+     // itemImg.src = `.${imgUrl}`;  
 
     const itemName = document.createElement('h2');
-    itemName.innerText = `.${name}`;
+    itemName.innerText = `${name}`;
 
     const itemPrice = document.createElement('h3');
-    itemPrice.innerText = `.${price}`;
+    itemPrice.innerText = `${price}`;
     
-    cartContainer.append( itemName, itemPrice)
+    cartContainer.append(itemName, itemPrice);
 
+    total += price; 
+    const totalValue = document.querySelector('#total-value')
+totalValue.innerText = 'Total price :' + total
 });
+
+console.log(total); 
