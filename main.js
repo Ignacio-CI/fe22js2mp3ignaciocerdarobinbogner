@@ -1,14 +1,12 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
-import { getDatabase, ref, get, onValue } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-database.js"
+import { getDatabase, ref, get, set, onValue, update, child } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-database.js"
 
 // TODO: Add SDKs for Firebase products that you want to use
 
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-
 // Your web app's Firebase configuration
-
 const firebaseConfig = {
 
   apiKey: "AIzaSyBVGKXt0navmTtlydS0X82fEUJTqxxcvg8",
@@ -40,11 +38,26 @@ const productsRef = ref(database, 'products');
 const productsSnapshot = await get(productsRef);
 const products = productsSnapshot.val();
 
-console.log(products);
+// console.log(products);
 
-//posta produkter på DOM
+const productIdArray = Object.keys(products);
+console.log(productIdArray);
+
+const itemsInCart = JSON.parse(localStorage.getItem('products'));
+console.log(itemsInCart)
+
+const prodAmountElement = document.querySelector('#prod-amount');
+
+if(localStorage.getItem('products') === null) {
+  prodAmountElement.innerText = 0;
+}
+else {
+  prodAmountElement.innerText = `${itemsInCart.length}`;
+}
+
+//Visa produkterna på DOM
 const container = $('#products-container');
-Object.values(products).forEach(({name, imgUrl, price, saldo}) => {
+Object.values(products).forEach(({ name, imgUrl, price, saldo }) => {
 
   const productDiv = $('<div>', { class: 'card' });
 
@@ -52,58 +65,123 @@ Object.values(products).forEach(({name, imgUrl, price, saldo}) => {
 
   const productName = $('<h2>', { text: name });
 
-  const productPrice = $('<p>', { text: `${price} kr`});
+  const productPrice = $('<p>', { text: `${price} kr` });
 
   const productQuantity = $('<h4>', { text: `In stock : ${saldo}` });
 
-  const addToCartBtn = $('<button>', { text: 'Add to cart', class: 'add-btn'});
+  const addToCartBtn = $('<button>', { text: 'Add to cart' });
 
   productDiv.append(productImage, productName, productPrice, productQuantity, addToCartBtn);
   container.append(productDiv);
 
 });
 
-// Add event listener to add-btn
-$('.add-btn').on('click', function(){
-  // Get the product name, price, and stock
-  const productName = $(this).siblings('h2').text(); // Get the text of the h2 element that is a sibling of the add-btn
-  const productPrice = $(this).siblings('p').text(); // Get the text of the p element that is a sibling of the add-btn 
-  const productStock = parseInt($(this).siblings('h4').text().replace('In stock : ', '')); // Get the text of the h4 element that contains "In stock" and extract the stock level from it
+const cart = [];
 
-  // Check if the product is in stock
-  if (productStock > 0) {
-    // Create a new object with the product name, price, and reduced stock
-    const product = {
-      name: productName,
-      price: productPrice,
-      stock: productStock - 1
-    };
-    
-    // Get the products from localStorage
-    let products;
-    if (localStorage.getItem('products') === null) {
-      products = [];
-    } else {
-      products = JSON.parse(localStorage.getItem('products'));
-    }
-    
-    // Add the new product to the products array
-    products.push(product);
-    
-    // Save the products array back to localStorage
-    localStorage.setItem('products', JSON.stringify(products));
-    
-    console.log('Product added to cart');
+const addButtons = document.querySelectorAll('button');
 
-    // Update the product stock in the DOM
-    $(this).siblings('h4').text(`In stock : ${product.stock}`);
+for (let i = 0; i < addButtons.length; i++) {
+  addButtons[i].className = productIdArray[i];
 
-    // Update the cart count in the DOM
+  addButtons[i].addEventListener('click', event => {
+    event.preventDefault()
+
+    const productId = event.target.className;
+
+    updateCart(productId);
+
+  })
+}
+
+function updateCart(id) {
+
+  const db = getDatabase();
+  const product = ref(db, 'products/' + id);
+
+  onValue(product, (snapshot) => {
+    const itemData = snapshot.val();
+    cart.push(itemData);
+    console.log(cart)
     const prodAmount = document.querySelector('#prod-amount');
-    prodAmount.innerText = `${products.length}`;
+    prodAmount.innerText = `${cart.length}`;
+    localStorage.setItem('products', JSON.stringify(cart));
+  });
 
-  };
-})
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Add event listener to add-btn
+// $('.add-btn').on('click', function(){
+//   // Get the product name, price, and stock
+//   const productName = $(this).siblings('h2').text(); // Get the text of the h2 element that is a sibling of the add-btn
+//   const productPrice = $(this).siblings('p').text(); // Get the text of the p element that is a sibling of the add-btn 
+//   const productStock = parseInt($(this).siblings('h4').text().replace('In stock : ', '')); // Get the text of the h4 element that contains "In stock" and extract the stock level from it
+
+//   // Check if the product is in stock
+//   if (productStock > 0) {
+//     // Create a new object with the product name, price, and reduced stock
+//     const product = {
+//       name: productName,
+//       price: productPrice,
+//       stock: productStock - 1
+//     };
+
+//     // Get the products from localStorage
+// let products;
+// if (localStorage.getItem('products') === null) {
+//   products = [];
+// } else {
+//   products = JSON.parse(localStorage.getItem('products'));
+// }
+
+// // Add the new product to the products array
+// products.push(product);
+
+// // Save the products array back to localStorage
+// localStorage.setItem('products', JSON.stringify(products));
+
+
+// // Update the product stock in the DOM
+// $(this).siblings('h4').text(`In stock : ${product.stock}`);
+
+// // Update the cart count in the DOM
+// const prodAmount = document.querySelector('#prod-amount');
+// prodAmount.innerText = `${products.length}`;
+
+//   };
+// })
 
 
 
@@ -112,7 +190,4 @@ $("#cart-btn").on("click", event => {
   location.assign('./html/cart.html');
 });
 
-onValue(productsRef, (snapshot) => {
-  const data = snapshot.val();
-  console.log(data)
-})
+
