@@ -61,7 +61,6 @@ cart.forEach(({ name, price }) => {
     total += price;
     const totalValue = document.querySelector('#total-value')
     totalValue.innerText = 'Total price :' + total
-    totalValue.innerText = 'Total price :' + total
 });
 const emptyBtn = document.querySelector('#empty-btn');
 
