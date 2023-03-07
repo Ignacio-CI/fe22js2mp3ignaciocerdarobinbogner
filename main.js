@@ -37,6 +37,7 @@ const productsRef = ref(database, 'products');
 
 const productsSnapshot = await get(productsRef);
 const products = productsSnapshot.val();
+// console.log(products)
 
 const productIdArray = Object.keys(products);
 
@@ -101,7 +102,7 @@ function outOfStock(productIdArray) {
   productIdArray.forEach(id => {
     onValue(ref(db, 'products/' + id), (snapshot) => {
       const saldo = snapshot.val().saldo;
-      console.log(saldo) 
+      // console.log(saldo) 
       if(saldo == 0) {
         const btn = document.getElementsByClassName(id);
         btn[0].disabled = true;
@@ -119,11 +120,15 @@ function updateCart(id) {
 
   onValue(product, (snapshot) => {
     const itemData = snapshot.val();
-    cart.push(itemData);
-    console.log(cart)
+    
+    cart.push([snapshot.key, itemData]);
+    console.log(cart);
+
     const prodAmount = document.querySelector('#prod-amount');
     prodAmount.innerText = `${cart.length}`;
+
     localStorage.setItem('products', JSON.stringify(cart));
+    
   });
 
 }
