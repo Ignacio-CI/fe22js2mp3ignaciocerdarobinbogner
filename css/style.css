@@ -79,3 +79,11 @@ nav {
   border-radius: 5px;
   cursor: pointer;
 }
+
+#counter-container {
+  border-radius: 50%;
+  text-align: center;
+  position: absolute;
+  top: 1%;
+  right: 1%;
+}

@@ -48,6 +48,7 @@ console.log(itemsInCart)
 
 const prodAmountElement = document.querySelector('#prod-amount');
 
+// Kolla om det finns produkter i kundvagnen sedan en tidigare session så att antalet visas
 if(localStorage.getItem('products') === null) {
   prodAmountElement.innerText = 0;
 }
@@ -66,11 +67,11 @@ Object.values(products).forEach(({ name, imgUrl, price, saldo }) => {
   const productName = $('<h2>', { text: name });
 
   const productPrice = $('<p>', { text: `${price} kr` });
-
+  
   const productQuantity = $('<h4>', { text: `In stock : ${saldo}` });
-
+  
   const addToCartBtn = $('<button>', { text: 'Add to cart' });
-
+  
   productDiv.append(productImage, productName, productPrice, productQuantity, addToCartBtn);
   container.append(productDiv);
 
@@ -102,6 +103,9 @@ function updateCart(id) {
     const itemData = snapshot.val();
     cart.push(itemData);
     console.log(cart)
+    cart.forEach(({saldo}) => {
+      console.log(saldo)
+    })
     const prodAmount = document.querySelector('#prod-amount');
     prodAmount.innerText = `${cart.length}`;
     localStorage.setItem('products', JSON.stringify(cart));
