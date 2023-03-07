@@ -38,10 +38,10 @@ const productsRef = ref(database, 'products');
 const productsSnapshot = await get(productsRef);
 const products = productsSnapshot.val();
 
-// console.log(products);
-
 const productIdArray = Object.keys(products);
-console.log(productIdArray);
+
+// Kolla om produkten finns eller inte in stock
+outOfStock(productIdArray);
 
 const itemsInCart = JSON.parse(localStorage.getItem('products'));
 console.log(itemsInCart)
@@ -67,7 +67,7 @@ Object.values(products).forEach(({ name, imgUrl, price, saldo }) => {
   const productName = $('<h2>', { text: name });
 
   const productPrice = $('<p>', { text: `${price} kr` });
-  
+
   const productQuantity = $('<h4>', { text: `In stock : ${saldo}` });
   
   const addToCartBtn = $('<button>', { text: 'Add to cart' });
@@ -84,12 +84,30 @@ const addButtons = document.querySelectorAll('button');
 for (let i = 0; i < addButtons.length; i++) {
   addButtons[i].className = productIdArray[i];
 
+  
   addButtons[i].addEventListener('click', event => {
     event.preventDefault()
-
+    
     const productId = event.target.className;
-
+    
     updateCart(productId);
+    
+  })
+}
+
+
+function outOfStock(productIdArray) {
+  const db = getDatabase();
+  productIdArray.forEach(id => {
+    onValue(ref(db, 'products/' + id), (snapshot) => {
+      const saldo = snapshot.val().saldo;
+      console.log(saldo) 
+      if(saldo == 0) {
+        const btn = document.getElementsByClassName(id);
+        btn[0].disabled = true;
+        btn[0].style.backgroundColor = 'gray';
+      }    
+    })
 
   })
 }
@@ -103,9 +121,6 @@ function updateCart(id) {
     const itemData = snapshot.val();
     cart.push(itemData);
     console.log(cart)
-    cart.forEach(({saldo}) => {
-      console.log(saldo)
-    })
     const prodAmount = document.querySelector('#prod-amount');
     prodAmount.innerText = `${cart.length}`;
     localStorage.setItem('products', JSON.stringify(cart));
