@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
 import { getDatabase, ref, get, set, onValue, update, child } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-database.js"
-
+import _ from '../node_modules/underscore/underscore-esm.js'
 // TODO: Add SDKs for Firebase products that you want to use
 
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -28,15 +28,9 @@ const firebaseConfig = {
 // Initialize Firebase
 
 const app = initializeApp(firebaseConfig);
-// const database = getDatabase(app);
+const database = getDatabase(app);
 
-
-// //Hämta products från databasen
-// const productsRef = ref(database, 'products');
-
-// const productsSnapshot = await get(productsRef);
-// const products = productsSnapshot.val();
-
+const currentSaldoArr = [];
 
 const logo = document.querySelector('.logo');
 logo.addEventListener('click', event => {
@@ -46,25 +40,53 @@ logo.addEventListener('click', event => {
 })
 
 const cart = JSON.parse(localStorage.getItem('products'));
-console.log(cart)
+console.log(cart);
+
+function getItemsId(cart) {
+    const itemsId = []
+
+    cart.forEach(index => {
+        itemsId.push(index[0])
+    })
+
+    return itemsId
+}
+
+const itemsIdArray = getItemsId(cart);
+console.log(itemsIdArray);
+
+const amountOfEachItem = itemsIdArray.reduce((obj, item) => {
+    if (!obj[item]) {
+        obj[item] = 0;
+    }
+    obj[item]++;
+    return obj;
+}, {});
+
+const productAmountArray = _.pairs(amountOfEachItem);
+
+productAmountArray.forEach(index => {
+    getCurrentSaldo(index[0])
+})
 
 const cartContainer = document.querySelector('#cart-container');
+
 let total = 0;
 
-if(cart !== null) {
-    cart.forEach(({ name, price }) => {
-    
+if (cart !== null) {
+    cart.forEach(product => {
+        const {name, price} = product[1];
         // const itemImg = document.createElement('img');
         // itemImg.src = `.${imgUrl}`;  
-    
+
         const itemName = document.createElement('h2');
         itemName.innerText = `${name}`;
-    
+
         const itemPrice = document.createElement('h3');
         itemPrice.innerText = `${price}`;
-    
+
         cartContainer.append(itemName, itemPrice);
-    
+
         total += price;
         const totalValue = document.querySelector('#total-value')
         totalValue.innerText = 'Total price :' + total
@@ -84,22 +106,28 @@ const buyBtn = document.querySelector('#pay-btn');
 buyBtn.addEventListener('click', event => {
     event.preventDefault();
 
-    const db = getDatabase();
+    for(let i = 0; i < productAmountArray.length; i++) {
+        const itemId = productAmountArray[i][0];
+        const amountInCart = productAmountArray[i][1];
+        const currentSaldo = currentSaldoArr[i]
 
-    cart.forEach(index => {
-        console.log(index[0], index[1].saldo)
-
-        const itemId = index[0];
-        const saldo = index[1].saldo
-
-        update(ref(db, `products/${itemId}` ), {
-            saldo: saldo - 1
+        const newSaldo = currentSaldo - amountInCart;
+       
+        update(ref(database, `products/${itemId}` ), {
+            saldo: newSaldo
         })
-    })
-
+    }
+    
     setTimeout(() => {
         localStorage.removeItem('products');
         location.assign('../index.html');
     }, 3000);
-    
+
 });
+
+function getCurrentSaldo(id) {
+
+    onValue(ref(database, `products/${id}`), (snapshot) => {
+        currentSaldoArr.push(snapshot.val().saldo)
+    })
+}

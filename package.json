@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/Ignacio-CI/fe22js2mp3ignaciocerdarobinbogner/issues"
   },
-  "homepage": "https://github.com/Ignacio-CI/fe22js2mp3ignaciocerdarobinbogner#readme"
+  "homepage": "https://github.com/Ignacio-CI/fe22js2mp3ignaciocerdarobinbogner#readme",
+  "dependencies": {
+    "underscore": "^1.13.6"
+  }
 }
