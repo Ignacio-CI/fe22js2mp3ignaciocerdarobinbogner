@@ -28,38 +28,48 @@ const firebaseConfig = {
 // Initialize Firebase
 
 const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
+// const database = getDatabase(app);
 
 
-//Hämta products från databasen
-const productsRef = ref(database, 'products');
+// //Hämta products från databasen
+// const productsRef = ref(database, 'products');
 
-const productsSnapshot = await get(productsRef);
-const products = productsSnapshot.val();
+// const productsSnapshot = await get(productsRef);
+// const products = productsSnapshot.val();
 
+
+const logo = document.querySelector('.logo');
+logo.addEventListener('click', event => {
+    event.preventDefault();
+
+    location.assign('../index.html');
+})
 
 const cart = JSON.parse(localStorage.getItem('products'));
 console.log(cart)
+
 const cartContainer = document.querySelector('#cart-container');
 let total = 0;
 
-cart.forEach(({ name, price }) => {
-
-    // const itemImg = document.createElement('img');
-    // itemImg.src = `.${imgUrl}`;  
-
-    const itemName = document.createElement('h2');
-    itemName.innerText = `${name}`;
-
-    const itemPrice = document.createElement('h3');
-    itemPrice.innerText = `${price}`;
-
-    cartContainer.append(itemName, itemPrice);
-
-    total += price;
-    const totalValue = document.querySelector('#total-value')
-    totalValue.innerText = 'Total price :' + total
-});
+if(cart !== null) {
+    cart.forEach(({ name, price }) => {
+    
+        // const itemImg = document.createElement('img');
+        // itemImg.src = `.${imgUrl}`;  
+    
+        const itemName = document.createElement('h2');
+        itemName.innerText = `${name}`;
+    
+        const itemPrice = document.createElement('h3');
+        itemPrice.innerText = `${price}`;
+    
+        cartContainer.append(itemName, itemPrice);
+    
+        total += price;
+        const totalValue = document.querySelector('#total-value')
+        totalValue.innerText = 'Total price :' + total
+    });
+}
 
 const emptyBtn = document.querySelector('#empty-btn');
 
@@ -89,7 +99,7 @@ buyBtn.addEventListener('click', event => {
 
     setTimeout(() => {
         localStorage.removeItem('products');
-        location.reload();
+        location.assign('../index.html');
     }, 3000);
     
 });
