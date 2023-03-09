@@ -69,7 +69,7 @@ productAmountArray.forEach(index => {
     getCurrentSaldo(index[0])
 })
 
-const cartContainer = document.querySelector('#cart-container');
+const summaryContainer = document.querySelector('#summary-container');
 
 let total = 0;
 
@@ -79,13 +79,13 @@ if (cart !== null) {
         // const itemImg = document.createElement('img');
         // itemImg.src = `.${imgUrl}`;  
 
-        const itemName = document.createElement('h2');
-        itemName.innerText = `${name}`;
+        const itemName = document.createElement('p');
+        itemName.innerText = `Item: ${name}`;
 
-        const itemPrice = document.createElement('h3');
-        itemPrice.innerText = `${price}`;
+        const itemPrice = document.createElement('p');
+        itemPrice.innerText = `Price: ${price} kr`;
 
-        cartContainer.append(itemName, itemPrice);
+        summaryContainer.append(itemName, itemPrice);
 
         total += price;
         const totalValue = document.querySelector('#total-value')
