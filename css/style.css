@@ -152,3 +152,6 @@ margin-bottom: 20px;
 #cart-container{
   margin: 100px;
 }
+button[disabled] {
+  background-color: gray;
+}

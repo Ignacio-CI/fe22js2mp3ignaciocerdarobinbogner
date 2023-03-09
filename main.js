@@ -41,8 +41,6 @@ const products = productsSnapshot.val();
 
 const productIdArray = Object.keys(products);
 
-// Kolla om produkten finns eller inte in stock
-outOfStock(productIdArray);
 
 const itemsInCart = JSON.parse(localStorage.getItem('products'));
 console.log(itemsInCart)
@@ -71,7 +69,13 @@ Object.values(products).forEach(({ name, imgUrl, price, saldo }) => {
 
   const productQuantity = $('<h4>', { text: `In stock : ${saldo}` });
   
-  const addToCartBtn = $('<button>', { text: 'Add to cart' });
+  const addToCartBtn = $('<button>', { text: 'Add to cart',  });
+  console.log(saldo)
+  
+
+  if (saldo === 0) {
+    addToCartBtn.attr('disabled', 'disabled');
+  }
   
   productDiv.append(productImage, productName, productPrice, productQuantity, addToCartBtn);
   container.append(productDiv);
@@ -93,23 +97,6 @@ for (let i = 0; i < addButtons.length; i++) {
     
     updateCart(productId);
     
-  })
-}
-
-
-function outOfStock(productIdArray) {
-  const db = getDatabase();
-  productIdArray.forEach(id => {
-    onValue(ref(db, 'products/' + id), (snapshot) => {
-      const saldo = snapshot.val().saldo;
-      // console.log(saldo) 
-      if(saldo == 0) {
-        const btn = document.getElementsByClassName(id);
-        btn[0].disabled = true;
-        btn[0].style.backgroundColor = 'gray';
-      }    
-    })
-
   })
 }
 
