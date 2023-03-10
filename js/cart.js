@@ -1,12 +1,9 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
 import { getDatabase, ref, get, set, onValue, update, child } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-database.js"
 import _ from '../node_modules/underscore/underscore-esm.js'
-// TODO: Add SDKs for Firebase products that you want to use
+import  '../node_modules/jquery/dist/jquery.min.js'
 
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
+// Web app's Firebase configuration
 const firebaseConfig = {
 
     apiKey: "AIzaSyBVGKXt0navmTtlydS0X82fEUJTqxxcvg8",
@@ -26,7 +23,6 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
@@ -63,6 +59,7 @@ const amountOfEachItem = itemsIdArray.reduce((obj, item) => {
     return obj;
 }, {});
 
+console.log(amountOfEachItem)
 const productAmountArray = _.pairs(amountOfEachItem);
 
 productAmountArray.forEach(index => {
@@ -112,16 +109,27 @@ buyBtn.addEventListener('click', event => {
         const currentSaldo = currentSaldoArr[i]
 
         const newSaldo = currentSaldo - amountInCart;
-       
-        update(ref(database, `products/${itemId}` ), {
-            saldo: newSaldo
-        })
+        
+        if(newSaldo < 0) {
+            alert(`Sorry, there are not ${itemId} in stock. You have ${amountInCart} in the cart, but we just have ${currentSaldo} in stock. We redirect you to the homepage in a few seconds so you can place a new order.`);
+
+            setTimeout(() => {
+            localStorage.removeItem('products');
+            location.assign('../index.html');
+            }, 3000);
+        }
+        else {
+            update(ref(database, `products/${itemId}` ), {
+                saldo: newSaldo
+            })
+            
+            setTimeout(() => {
+                localStorage.removeItem('products');
+                location.assign('../index.html');
+                }, 3000);
+        }
     }
     
-    setTimeout(() => {
-        localStorage.removeItem('products');
-        location.assign('../index.html');
-    }, 3000);
 
 });
 

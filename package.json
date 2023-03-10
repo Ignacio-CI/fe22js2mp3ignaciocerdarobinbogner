@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/Ignacio-CI/fe22js2mp3ignaciocerdarobinbogner#readme",
   "dependencies": {
+    "jquery": "^3.6.4",
     "underscore": "^1.13.6"
   }
 }
